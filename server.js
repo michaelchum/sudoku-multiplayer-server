@@ -57,12 +57,12 @@ app.get('/sudoku/generate-string', passport.authenticate('bearer', { session: fa
     return res.send({ sudoku: sudoku.classic(sudoku.generate(), 54).toString() });
 });
 
-app.get('/sudoku/generate/:id', function(req, res) {
+app.get('/sudoku/generate/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var grid = sudoku.classic(sudoku.generate(), parseInt(req.params.id));
     return res.send({ sudoku: grid});
 });
 
-app.get('/sudoku/generate-string/:id', function(req, res) {
+app.get('/sudoku/generate-string/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var grid = sudoku.classic(sudoku.generate(), parseInt(req.params.id)).toString();
     return res.send({ sudoku: grid});
 });
