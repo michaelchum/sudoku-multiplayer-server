@@ -1,26 +1,33 @@
 {
-  "name": "NodeAPI",
-  "version": "0.1.0",
-  "author": "Evgeny Aleksandrov",
-  "description": "simple example of RESTful API with Node.js",
-  "private": true,
-  "scripts": {
-    "start": "node ./server.js"
-  },
+  "name": "sudoku-multiplayer-server",
+  "version": "1.0.0",
+  "description": "Simple RESTful API built on Node.js with Express.js and MongoDB with Mongoose",
+  "main": "server.js",
   "dependencies": {
-    "body-parser": "1.9.x",
-    "express": "4.10.x",
-    "faker": "2.0.x",
-    "method-override": "2.3.x",
-    "mongoose": "3.8.x",
-    "nconf": "0.6.x",
-    "oauth2orize": "1.0.x",
-    "passport": "0.2.x",
-    "passport-http": "0.2.x",
-    "passport-http-bearer": "1.0.x",
-    "passport-oauth2-client-password": "0.1.x",
-    "serve-favicon": "2.1.x",
-    "winston": "0.8.x"
+    "body-parser": "^1.9.3",
+    "express": "^4.10.8",
+    "faker": "^2.0.3",
+    "mongoose": "^3.8.22",
+    "method-override": "^2.3.1",
+    "nconf": "^0.6.9",
+    "oauth2orize": "^1.0.1",
+    "passport-oauth2-client-password": "^0.1.2",
+    "passport": "^0.2.1",
+    "passport-http-bearer": "^1.0.1",
+    "passport-http": "^0.2.2",
+    "sudoku-c": "^0.0.3",
+    "serve-favicon": "^2.1.7",
+    "winston": "^0.8.3"
   },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelchum/sudoku-multiplayer-server/"
+  },
+  "author": "",
   "license": "MIT"
 }
