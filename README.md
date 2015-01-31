@@ -45,8 +45,10 @@ Password: `simplepassword`
 
 To test these requests, I'm using [httpie](https://github.com/jakubroztocil/httpie) which I highly recommend. It is a very convenient wrapper around cURL in the unix terminal.
 
-### Create user
-`http POST http://104.131.185.217:3000/api/register client_id=AndroidV1 client_secret=abc123 username=bobby password=simplepassword1`
+#### POST Create user
+```
+http POST http://104.131.185.217:3000/api/register client_id=AndroidV1 client_secret=abc123 username=bobby password=simplepassword1
+```
 
 ```
 {
@@ -54,13 +56,113 @@ To test these requests, I'm using [httpie](https://github.com/jakubroztocil/http
 }
 ```
 
-### User login
-`http POST http://104.131.185.217:3000/oauth/token grant_type=password client_id=mobileV1 client_secret=abc123456 username=bobby password=simplepassword1`
+#### POST User login
+```
+http POST http://104.131.185.217:3000/oauth/token grant_type=password client_id=AndroidV1 client_secret=abc123 username=bobby password=simplepassword1
+```
 
-### Refresh token
-`http POST http://104.131.185.217:3000/oauth/token grant_type=refresh_token client_id=mobileV1 client_secret=abc123456 refresh_token=TOKEN`
+```
+{
+    "access_token": "ZSlVNeQ0rVwyZ0JIFMcm5mQPhcJb3XXho+FRFx/ok30=",
+    "expires_in": 3600,
+    "refresh_token": "YgwjnSkzeGFgs3B/ifpctdHg1fifpBp1Hn8ZU4fC3UM=",
+    "token_type": "Bearer"
+}
+```
 
-### Generate sudoku grid
+#### POST Refresh token
+```
+http POST http://104.131.185.217:3000/oauth/token grant_type=refresh_token client_id=AndroidV1 client_secret=abc123 refresh_token=TOKEN
+```
+
+```
+{
+    "access_token": "nZ175+UjVqol/W2Wz2HGzR4p+vG+Fh4G5JEYruU6Cy8=",
+    "expires_in": 3600,
+    "refresh_token": "FLnV7vzdkVAQh+6/xghuAYkPWhvyz7TmfkcYzgzy3KM=",
+    "token_type": "Bearer"
+}
+```
+
+Note that a new `access_token` <b>AND</b> `refresh_token` will be generated
+
+#### GET Generate a unique solution sudoku grid with 54 slots as an array
+```
 http http://104.131.185.217:3000/sudoku/generate Authorization:'Bearer TOKEN'
+```
+
+```
+{
+    "sudoku": [
+        9,
+        3,
+        0,
+        ...
+        0,
+        2,
+        5
+    ]
+}
+```
+
+#### GET Generate a unique solution sudoku grid with 54 slots as a string
+```
+http http://104.131.185.217:3000/sudoku/generate-string Authorization:'Bearer TOKEN'
+```
+
+```
+{
+    "sudoku": "7,5,0,0,4,0,0,0,8,0,0,0,0,3,8,0,0,0,0,0,0,0,0,0,0,4,6,0,7,0,0,6,4,0,0,0,1,6,0,3,0,2,5,0,0,3,0,0,0,0,9,0,0,0,0,0,0,0,0,5,0,2,3,6,0,5,8,0,3,0,0,7,0,0,0,0,0,7,0,0,0"
+}
+```
+
+#### GET Generate a sudoku grid with a specified number of empty slots as an array
+```
+http http://104.131.185.217:3000/sudoku/generate/NUMBER Authorization:'Bearer TOKEN'
+```
+
+```
+{
+    "sudoku": [
+        4,
+        2,
+        3,
+        ...
+        1,
+        7,
+        2
+    ]
+}
+```
+
+#### GET Generate a sudoku grid with a specified number of empty slots as a string
+```
+http http://104.131.185.217:3000/sudoku/generate-string/NUMBER Authorization:'Bearer TOKEN'
+```
+
+```
+{
+    "sudoku": "8,6,0,9,0,0,0,4,3,9,0,0,2,0,3,8,6,1,0,4,3,0,6,1,9,7,0,0,0,9,1,5,0,4,3,0,0,0,7,4,3,0,0,8,0,4,3,2,6,8,9,1,0,7,0,1,0,0,9,6,3,0,4,0,9,6,0,0,4,7,1,8,0,0,0,7,1,8,5,0,0"
+}
+```
+
+#### POST Solve a sudoku grid specified as a string
+```
+http POST http://104.131.185.217:3000/sudoku/solve grid=8,6,0,9,0,0,0,4,3,9,0,0,2,0,3,8,6,1,0,4,3,0,6,1,9,7,0,0,0,9,1,5,0,4,3,0,0,0,7,4,3,0,0,8,0,4,3,2,6,8,9,1,0,7,0,1,0,0,9,6,3,0,4,0,9,6,0,0,4,7,1,8,0,0,0,7,1,8,5,0,0 Authorization:'Bearer TOKEN'
+```
+
+```
+{
+    "sudoku": [
+        8,
+        6,
+        1,
+        ...
+        2,
+        1,
+        2
+    ]
+}
+```
 
 The requests will be updated as the project goes on. Don't hesitate to bug me on FB if you have any questions.
