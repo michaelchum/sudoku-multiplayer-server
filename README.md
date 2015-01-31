@@ -25,15 +25,15 @@ Our API server is hosted at `104.131.185.217:3000`. You can also use `hksn.ca:30
 
 ### Android Client Info
 
-Client ID: `AndroidV1`
+client_id: `AndroidV1`
 
-Client Secret: `abc123`
+client_id: `abc123`
 
 ### Web Client Info
 
-Client ID: `WebV1`
+client_id: `WebV1`
 
-Client Secret: `abc123`
+client_secret: `abc123`
 
 ### Sample User
 
@@ -43,10 +43,24 @@ Password: `simplepassword`
 
 ## API Requests
 
-http POST http://localhost:1337/oauth/token grant_type=password client_id=AndroidV1 client_secret=abc123 username=bob password=simplepassword
+To test these requests, I'm using [httpie](https://github.com/jakubroztocil/httpie) which I highly recommend. It is a very convenient wrapper around cURL in the unix terminal.
 
-http POST http://localhost:1337/oauth/token grant_type=refresh_token client_id=mobileV1 client_secret=abc123456 refresh_token=TOKEN
+### Create user
+`http POST http://104.131.185.217:3000/api/register client_id=AndroidV1 client_secret=abc123 username=bobby password=simplepassword1`
 
-http http://localhost:1337/sudoku/generate Authorization:'Bearer TOKEN'
+```
+{
+    "status": "Registration Successful"
+}
+```
+
+### User login
+`http POST http://104.131.185.217:3000/oauth/token grant_type=password client_id=mobileV1 client_secret=abc123456 username=bobby password=simplepassword1`
+
+### Refresh token
+`http POST http://104.131.185.217:3000/oauth/token grant_type=refresh_token client_id=mobileV1 client_secret=abc123456 refresh_token=TOKEN`
+
+### Generate sudoku grid
+http http://104.131.185.217:3000/sudoku/generate Authorization:'Bearer TOKEN'
 
 The requests will be updated as the project goes on. Don't hesitate to bug me on FB if you have any questions.
