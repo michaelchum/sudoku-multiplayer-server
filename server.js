@@ -2,6 +2,7 @@ var express         = require('express');
 var path            = require('path');
 var passport        = require('passport');
 var bodyParser      = require('body-parser');
+var cors            = require('cors');
 var config          = require('./libs/config');
 var log             = require('./libs/log')(module);
 var oauth2          = require('./libs/oauth2');
@@ -10,11 +11,7 @@ var UserModel    = require('./libs/mongoose').UserModel;
 var sudoku = require('sudoku-c');
 var app = express();
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
