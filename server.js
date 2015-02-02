@@ -40,16 +40,24 @@ app.get('/ErrorExample', function(req, res, next){
 });
 
 app.post('/api/register', function(req, res) {
-    var user = new UserModel({username : req.body.username, password : req.body.password});
-    user.save(function(err, user) {
+    UserModel.findOne({ username: req.body.username }, function(err, user) {
         if (err) {
-            res.send({ error: error(err)});
-            return log.error(err);
-        } else {
-            res.send({ status: 'Registration Successful' });
-            return log.info("New user - %s:%s",user.username,user.password);
+            var user = new UserModel({username : req.body.username, password : req.body.password});
+            user.save(function(err, user) {
+                if (err) {
+                    res.send({ error: error(err)});
+                    return log.error(err);
+                } else {
+                    res.send({ status: 'Registration Successful' });
+                    return log.info("New user - %s:%s",user.username,user.password);
+                }
+            });
+        } else if (user) {
+            res.send({ status: 'Error, username already exists' });
+            return log.info("Username already exists - %s:%s",user.username,user.password);
         }
     });
+
 });
 
 app.get('/sudoku/generate', passport.authenticate('bearer', { session: false }), function(req, res) {
