@@ -41,20 +41,21 @@ app.get('/ErrorExample', function(req, res, next){
 
 app.post('/api/register', function(req, res) {
     UserModel.findOne({ username: req.body.username }, function(err, user) {
-        if (err) {
-            var user = new UserModel({username : req.body.username, password : req.body.password});
-            user.save(function(err, user) {
+        if (user) {
+            log.info("Username already exists - %s:%s",user.username,user.password);
+            return res.send({ status: 'Error, username already exists' });
+        } else {
+            var newuser = new UserModel({username : req.body.username, password : req.body.password});
+            newuser.save(function(err, newuser) {
                 if (err) {
                     log.error(err);
                     return res.send({ error: error(err)});
                 } else {
-                    log.info("New user - %s:%s",user.username,user.password);
+                    console.log('hello');
+                    log.info("New user - %s:%s",newuser.username,newuser.password);
                     return res.send({ status: 'Registration Successful' });
                 }
             });
-        } else if (user) {
-            log.info("Username already exists - %s:%s",user.username,user.password);
-            return res.send({ status: 'Error, username already exists' });
         }
     });
 
