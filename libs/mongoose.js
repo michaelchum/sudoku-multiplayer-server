@@ -47,6 +47,19 @@ var User = new Schema({
     email: {
         type: String,
         require: false
+    },
+    currentGrid: {
+        type: String,
+        require: false
+    },
+    currentDifficulty: {
+        type: Number,
+        require: false
+    },
+    currentOpponent: {
+        type: String,
+        unique: true,
+        required: false
     }
 });
 
