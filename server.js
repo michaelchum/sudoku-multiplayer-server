@@ -8,8 +8,9 @@ var log             = require('./libs/log')(module);
 var oauth2          = require('./libs/oauth2');
 var SudokuModel    = require('./libs/mongoose').SudokuModel;
 var UserModel    = require('./libs/mongoose').UserModel;
-var sudoku = require('sudoku-c');
+var sudoku = require('./libs/sudoku.js');
 var app = express();
+var io = require('socket.io')(app);
 
 app.use(cors());
 
@@ -62,11 +63,11 @@ app.post('/api/register', function(req, res) {
 });
 
 app.get('/sudoku/generate', passport.authenticate('bearer', { session: false }), function(req, res) {
-    return res.send({ sudoku: sudoku.classic(sudoku.generate(), 54) });
+    return res.send({ sudoku: sudoku.generate("medium").toString() });
 });
 
 app.get('/sudoku/generate-string', passport.authenticate('bearer', { session: false }), function(req, res) {
-    return res.send({ sudoku: sudoku.classic(sudoku.generate(), 54).toString() });
+    return res.send({ sudoku: sudoku.generate("medium").toString() });
 });
 
 app.get('/sudoku/generate/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
@@ -105,4 +106,13 @@ app.use(function(err, req, res, next){
 
 app.listen(config.get('port'), function(){
     log.info('Express server listening on port ' + config.get('port'));
+});
+
+// Socket.io
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
 });
