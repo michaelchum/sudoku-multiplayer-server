@@ -1,4 +1,5 @@
 var express         = require('express');
+var http            = require('http');
 var path            = require('path');
 var passport        = require('passport');
 var bodyParser      = require('body-parser');
@@ -10,14 +11,15 @@ var SudokuModel    = require('./libs/mongoose').SudokuModel;
 var UserModel    = require('./libs/mongoose').UserModel;
 var sudoku = require('./libs/sudoku.js');
 var app = express();
-var io = require('socket.io')(app);
+var server = http.createServer(app);
+var socket = require('socket.io');
+var io = socket.listen(server);
 
 app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
-// app.use(methodOverride('X-HTTP-Method-Override'));
 
 app.get('/api', passport.authenticate('bearer', { session: false }), function (req, res) {
     res.send('API is running');
@@ -44,7 +46,7 @@ app.post('/api/register', function(req, res) {
     UserModel.findOne({ username: req.body.username }, function(err, user) {
         if (user) {
             log.info("Username already exists - %s:%s",user.username,user.password);
-            return res.send({ status: 'Error, username already exists' });
+            return res.send({ error: 'Username already exists' });
         } else {
             var newuser = new UserModel({username : req.body.username, password : req.body.password});
             newuser.save(function(err, newuser) {
@@ -62,28 +64,32 @@ app.post('/api/register', function(req, res) {
 
 });
 
-app.get('/sudoku/generate', passport.authenticate('bearer', { session: false }), function(req, res) {
+app.get('/sudoku/generate', function(req, res) {
+    return res.send({ sudoku: sudoku.generate("medium") });
+});
+
+app.get('/sudoku/generate-string', function(req, res) {
     return res.send({ sudoku: sudoku.generate("medium").toString() });
 });
 
-app.get('/sudoku/generate-string', passport.authenticate('bearer', { session: false }), function(req, res) {
-    return res.send({ sudoku: sudoku.generate("medium").toString() });
+app.get('/sudoku/generate/:id', function(req, res) {
+    if (req.params.id == 'easy' || req.params.id == 'medium' || req.params.id == 'hard') return res.send({ sudoku: sudoku.generate(req.params.id)});
+    return res.send({ error: 'Last argument has to be "easy", "medium" or "hard"' });
 });
 
-app.get('/sudoku/generate/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var grid = sudoku.classic(sudoku.generate(), parseInt(req.params.id));
-    return res.send({ sudoku: grid});
-});
-
-app.get('/sudoku/generate-string/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var grid = sudoku.classic(sudoku.generate(), parseInt(req.params.id)).toString();
-    return res.send({ sudoku: grid});
+app.get('/sudoku/generate-string/:id', function(req, res) {
+    if (req.params.id == 'easy' || req.params.id == 'medium' || req.params.id == 'hard') return res.send({ sudoku: sudoku.generate(req.params.id).toString()});
+    return res.send({ error: 'Last argument has to be "easy", "medium" or "hard"' });
 });
 
 app.post('/sudoku/solve', function(req, res) {
     var grid = req.body.grid.split(",").map(Number);
-    var solution =  sudoku.solve(grid);
-    return res.send({ sudoku: solution });
+    return res.send({ sudoku: sudoku.solve(grid) });
+});
+
+app.post('/sudoku/solve-string', function(req, res) {
+    var grid = req.body.grid.split(",").map(Number);
+    return res.send({ sudoku: sudoku.solve(grid).toString() });
 });
 
 app.use(express.static(path.join(__dirname, "public")));

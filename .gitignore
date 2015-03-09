@@ -29,7 +29,7 @@ node_modules
 # Users Environment Variables
 .lock-wscript
 
-# Test reports
+# Jenkins test reports
 test-reports.xml
 
 # MongoDB

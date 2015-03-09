@@ -448,7 +448,7 @@ var sudoku = (function() {
 	}
 
 	function solve(grid, options) {
-		return search(parseGrid(grid), options);
+		return serializeNormal(search(parseGrid(deserializeNormal(grid)), options));
 	}
 
 	function search(values, options) {
@@ -548,14 +548,17 @@ var sudoku = (function() {
 	}
 
 	function serializeNormal(values) {
-		var serialized = '';
+		// var serialized = '';
+		var serialized = [];
 		for (var i = 0; i < ROWS.length; i++) {
 			for (var j = 0; j < COLS.length; j++) {
 				var currentSquare = COLS[j] + ROWS[i];
 				if (currentSquare in values) {
-					serialized += values[currentSquare];
+					// serialized += values[currentSquare];
+					serialized.push(parseInt(values[currentSquare]));
 				} else {
-					serialized += 0;
+					// serialized += 0;
+					serialized.push(0);
 				}
 			}
 		}
@@ -568,7 +571,7 @@ var sudoku = (function() {
 		for (var i = 0; i < ROWS.length; i++) {
 			for (var j = 0; j < COLS.length; j++) {
 				var currentSquare = COLS[j] + ROWS[i];
-				if (serialized[count] != 0) deserialized[currentSquare] = serialized[count];
+				if (parseInt(serialized[count]) !== 0) deserialized[currentSquare] = serialized[count];
 				count++;
 			}
 		}
@@ -623,7 +626,7 @@ var sudoku = (function() {
 		}
 		var time = new Date().getTime() - start;
 		debug('Generated puzzle with ' + keys(generatedGrid).length + ' squares in ' + time + 'ms');
-		return generatedGrid;
+		return serializeNormal(generatedGrid);
 	}
  
 	function parseGrid(grid) {

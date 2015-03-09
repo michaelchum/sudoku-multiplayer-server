@@ -4,6 +4,6 @@
         "tokenLife" : 3600
     },
     "mongoose": {
-        "uri": "mongodb://localhost/testAPI"
+        "uri": "mongodb://localhost/sudoku"
     }
 }
