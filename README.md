@@ -13,8 +13,8 @@ If you want to install the server on your own for whatever reason, install/run M
 
 ```
 git clone
-npm install
-node server.js
+make install
+make
 ```
 
 ## Server
@@ -116,9 +116,9 @@ http http://104.131.185.217:3000/sudoku/generate-string Authorization:'Bearer TO
 }
 ```
 
-#### GET Generate a sudoku grid with a specified number of empty slots as an array
+#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard"
 ```
-http http://104.131.185.217:3000/sudoku/generate/NUMBER Authorization:'Bearer TOKEN'
+http http://104.131.185.217:3000/sudoku/generate/easy
 ```
 
 ```
@@ -135,9 +135,9 @@ http http://104.131.185.217:3000/sudoku/generate/NUMBER Authorization:'Bearer TO
 }
 ```
 
-#### GET Generate a sudoku grid with a specified number of empty slots as a string
+#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard"
 ```
-http http://104.131.185.217:3000/sudoku/generate-string/NUMBER Authorization:'Bearer TOKEN'
+http http://104.131.185.217:3000/sudoku/generate-string/medium
 ```
 
 ```
@@ -162,6 +162,17 @@ http POST http://104.131.185.217:3000/sudoku/solve grid=8,6,0,9,0,0,0,4,3,9,0,0,
         1,
         2
     ]
+}
+```
+
+#### POST Solve a sudoku grid specified as a string
+```
+http POST http://104.131.185.217:3000/sudoku/solve-string grid=8,6,0,9,0,0,0,4,3,9,0,0,2,0,3,8,6,1,0,4,3,0,6,1,9,7,0,0,0,9,1,5,0,4,3,0,0,0,7,4,3,0,0,8,0,4,3,2,6,8,9,1,0,7,0,1,0,0,9,6,3,0,4,0,9,6,0,0,4,7,1,8,0,0,0,7,1,8,5,0,0
+```
+
+```
+{
+    "sudoku": "8,6,1,9,7,5,2,4,3,9,7,5,2,4,3,8,6,1,2,4,3,8,6,1,9,7,5,6,8,9,1,5,7,4,3,2,1,5,7,4,3,2,6,8,9,4,3,2,6,8,9,1,5,7,7,1,8,5,9,6,3,2,4,5,9,6,3,2,4,7,1,8,3,2,4,7,1,8,5,9,6"
 }
 ```
 
