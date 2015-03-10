@@ -119,16 +119,17 @@ app.listen(config.get('port'), function(){
 // Socket.io
 
 io.on('connection', function (socket) {
-  socket.on('connect', connect);
-  socket.on('move', connect);
-  socket.on('progress', progress);
-  socket.on('disconnect', disconnect);
+    socket.emit('connect', {connect : 'Connection successful'});
+    socket.on('connect', connect);
+    socket.on('move', connect);
+    socket.on('progress', progress);
+    socket.on('disconnect', disconnect);
 });
 
 var connect = function (data) {
     console.log(data);
     console.log("New player has connected: " + data.name);
-    socket.emit('welcome', 'Hello, this is working');
+    socket.emit('welcome', {welcome :'Hello, this is working'});
 }
 
 var move = function (data) {
