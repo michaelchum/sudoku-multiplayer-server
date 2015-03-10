@@ -1,5 +1,4 @@
 var express         = require('express');
-var http            = require('http');
 var path            = require('path');
 var passport        = require('passport');
 var bodyParser      = require('body-parser');
@@ -12,9 +11,8 @@ var UserModel       = require('./libs/mongoose').UserModel;
 var sudoku          = require('./libs/sudoku.js');
 var player          = require('./libs/player.js');
 var app             = express();
-var server          = http.createServer(app);
-var socket          = require('socket.io');
-var io              = socket.listen(server);
+var http            = require('http').Server(app);
+var io              = require('socket.io')(http);
 
 var clients = {};
 
@@ -112,13 +110,14 @@ app.use(function(err, req, res, next){
     return;
 });
 
-server.listen(config.get('port'), function(){
+http.listen(config.get('port'), function(){
     log.info('Express server listening on port ' + config.get('port'));
 });
 
 // Socket.io
 
 io.on('connection', function (socket) {
+    socket.emit('connect','hello');
     console.log('Client connected ' + socket.id.toString());
     socket.on('connect', function (data) {
         console.log(data);
