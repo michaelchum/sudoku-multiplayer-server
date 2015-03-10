@@ -120,27 +120,15 @@ server.listen(config.get('port'), function(){
 
 io.on('connection', function (socket) {
     console.log('Client connected ' + socket.id.toString());
-    socket.on('connect', connect);
-    socket.on('move', connect);
+    socket.on('connect', function (data) {
+        console.log(data);
+        console.log("New player has connected: " + data.name);
+        // socket.emit('welcome', {welcome :'Hello, this is working'});
+    });
+    socket.on('move', function (data) {
+        console.log(data);
+    });
     socket.on('progress', progress);
     socket.on('disconnect', disconnect);
 });
-
-var connect = function (data) {
-    console.log(data);
-    console.log("New player has connected: " + data.name);
-    socket.emit('welcome', {welcome :'Hello, this is working'});
-}
-
-var move = function (data) {
-    console.log(data);
-}
-
-var progress = function (data) {
-    console.log(data);
-}
-
-var disconnect = function (data) {
-    console.log(data);
-}
 
