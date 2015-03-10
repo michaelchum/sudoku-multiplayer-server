@@ -57,7 +57,6 @@ app.post('/api/register', function(req, res) {
                     log.error(err);
                     return res.send({ error: error(err)});
                 } else {
-                    console.log('hello');
                     log.info("New user - %s:%s",newuser.username,newuser.password);
                     return res.send({ status: 'Registration Successful' });
                 }
@@ -129,6 +128,7 @@ io.on('connection', function (socket) {
 var connect = function (data) {
     console.log(data);
     console.log("New player has connected: " + data.name);
+    socket.emit('welcome', 'Hello, this is working');
 }
 
 var move = function (data) {
