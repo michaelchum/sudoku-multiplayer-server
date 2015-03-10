@@ -83,40 +83,9 @@ http POST http://104.131.185.217:3000/oauth/token grant_type=refresh_token clien
     "token_type": "Bearer"
 }
 ```
-
 Note that a new `access_token` <b>AND</b> `refresh_token` will be generated
 
-#### GET Generate a unique solution sudoku grid with 54 slots as an array
-```
-http http://104.131.185.217:3000/sudoku/generate Authorization:'Bearer TOKEN'
-```
-
-```
-{
-    "sudoku": [
-        9,
-        3,
-        0,
-        ...
-        0,
-        2,
-        5
-    ]
-}
-```
-
-#### GET Generate a unique solution sudoku grid with 54 slots as a string
-```
-http http://104.131.185.217:3000/sudoku/generate-string Authorization:'Bearer TOKEN'
-```
-
-```
-{
-    "sudoku": "7,5,0,0,4,0,0,0,8,0,0,0,0,3,8,0,0,0,0,0,0,0,0,0,0,4,6,0,7,0,0,6,4,0,0,0,1,6,0,3,0,2,5,0,0,3,0,0,0,0,9,0,0,0,0,0,0,0,0,5,0,2,3,6,0,5,8,0,3,0,0,7,0,0,0,0,0,7,0,0,0"
-}
-```
-
-#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard"
+#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard" with unique solution
 ```
 http http://104.131.185.217:3000/sudoku/generate/easy
 ```
@@ -135,7 +104,7 @@ http http://104.131.185.217:3000/sudoku/generate/easy
 }
 ```
 
-#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard"
+#### GET Generate a sudoku grid with specified difficulty "easy", "medium" or "hard" with unique solution
 ```
 http http://104.131.185.217:3000/sudoku/generate-string/medium
 ```
