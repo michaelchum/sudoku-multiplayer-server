@@ -7,13 +7,16 @@ var cors            = require('cors');
 var config          = require('./libs/config');
 var log             = require('./libs/log')(module);
 var oauth2          = require('./libs/oauth2');
-var SudokuModel    = require('./libs/mongoose').SudokuModel;
-var UserModel    = require('./libs/mongoose').UserModel;
-var sudoku = require('./libs/sudoku.js');
-var app = express();
-var server = http.createServer(app);
-var socket = require('socket.io');
-var io = socket.listen(server);
+var SudokuModel     = require('./libs/mongoose').SudokuModel;
+var UserModel       = require('./libs/mongoose').UserModel;
+var sudoku          = require('./libs/sudoku.js');
+var player          = require('./libs/player.js');
+var app             = express();
+var server          = http.createServer(app);
+var socket          = require('socket.io');
+var io              = socket.listen(server);
+
+var clients = {};
 
 app.use(cors());
 
@@ -117,8 +120,26 @@ app.listen(config.get('port'), function(){
 // Socket.io
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+  socket.on('connect', connect);
+  socket.on('move', connect);
+  socket.on('progress', progress);
+  socket.on('disconnect', disconnect);
 });
+
+var connect = function (data) {
+    console.log(data);
+    console.log("New player has connected: " + data.name);
+}
+
+var move = function (data) {
+    console.log(data);
+}
+
+var progress = function (data) {
+    console.log(data);
+}
+
+var disconnect = function (data) {
+    console.log(data);
+}
+
