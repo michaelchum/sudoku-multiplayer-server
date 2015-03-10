@@ -128,7 +128,5 @@ io.on('connection', function (socket) {
     socket.on('move', function (data) {
         console.log(data);
     });
-    socket.on('progress', progress);
-    socket.on('disconnect', disconnect);
 });
 
