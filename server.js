@@ -119,7 +119,7 @@ app.listen(config.get('port'), function(){
 // Socket.io
 
 io.on('connection', function (socket) {
-    socket.emit('connect', {connect : 'Connection successful'});
+    console.log('Client connected ' + socket.id.toString());
     socket.on('connect', connect);
     socket.on('move', connect);
     socket.on('progress', progress);
